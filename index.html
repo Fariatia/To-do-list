@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      padding: 10px;
+      background: #f4f4f4;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>To-Do List</h2>
+  <input type="text" id="new-task" placeholder="Add a new task">
+  <button onclick="addTask()">Add Task</button>
+
+  <ul id="task-list"></ul>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', loadTasks);
+
+    function loadTasks() {
+      let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      tasks.forEach(task => {
+        appendTask(task);
+      });
+    }
+
+    function addTask() {
+      let task = document.getElementById('new-task').value;
+      if (task === "") return;
+
+      appendTask(task);
+      saveTask(task);
+    }
+
+    //please work, pleasee.....
+
+    function appendTask(task) {
+      let li = document.createElement('li');
+      li.textContent = task;
+      li.onclick = function () {
+        li.remove();
+        removeTask(task);
+      };
+      document.getElementById('task-list').appendChild(li);
+    }
+
+    function saveTask(task) {
+      let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      tasks.push(task);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    function removeTask(task) {
+      let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      tasks = tasks.filter(t => t !== task);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+  </script>
+
+</body>
+</html>
